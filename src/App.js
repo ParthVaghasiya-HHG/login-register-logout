@@ -1,23 +1,54 @@
-import logo from './logo.svg';
-import './App.css';
+import logo from "./logo.svg";
+import "./App.css";
+import { useSelector } from "react-redux";
+import Register from "./Component/Register";
+import Login from "./Component/Login";
+import { useDispatch } from "react-redux/es/exports";
+import { useEffect } from "react";
+import Prodect from "./Component/Prodect";
 
 function App() {
+  const product = useSelector((state) => state.product);
+  const register = useSelector((state) => state.users);
+  const logout = useSelector((state) => state.user);
+
+  const dispach = useDispatch();
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {product.map((product) => {
+        return (
+          <div key={product.id}>
+            {product.name} - {product.status} -{product.species}
+            <img src={product.image}></img>
+          </div>
+        );
+      })}
+
+      {register.map((register) => {
+        return (
+          <div key="hello">
+            {register.Name} - {register.UserName}
+          </div>
+        );
+      })}
+      <Register />
+
+      {logout ? (
+        <input
+          type="button"
+          value="logout"
+          onClick={() => {
+            dispach({
+              type: "LOGOUT",
+            });
+          }}
+        />
+      ) : (
+        <Login />
+      )}
+      <br></br>
+      <Prodect />
     </div>
   );
 }
